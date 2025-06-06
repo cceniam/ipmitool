@@ -31,7 +31,11 @@ jobs:
 
     - name: Convert line endings
       run: dos2unix bootstrap configure.ac csv-revision
-
+    # 写入 $GITHUB_ENV，供后续所有步骤继承(fix cp permission error)
+    - name: Disable ACL emulation (fix cp permission error)
+      shell: bash
+      run: |
+        echo 'CYGWIN=noacl winsymlinks:nativestrict' >> "$GITHUB_ENV"
     #-------------- 2. 构建与测试 ----------------
     - name: bootstrap
       run: bash -c "./bootstrap"
